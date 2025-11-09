@@ -3,27 +3,56 @@ pragma solidity ^0.8.20;
 
 contract TransactionLogger {
     struct Transaction {
-        address sender;
-        string txId;
+        uint256 userId;
+        uint256 campaignId;
+        uint256 transactionId;
         uint256 amount;
+        string status;
+        string note;
         uint256 timestamp;
     }
 
     Transaction[] public transactions;
 
-    event TransactionCommitted(address indexed sender, string txId, uint256 amount, uint256 timestamp);
+    event TransactionCommitted(
+        uint256 userId,
+        uint256 campaignId,
+        uint256 transactionId,
+        uint256 amount,
+        string status,
+        string note,
+        uint256 timestamp
+    );
 
-    function commitTransaction(string memory _txId, uint256 _amount) public {
+    function commitTransaction(
+        uint256 userId,
+        uint256 campaignId,
+        uint256 transactionId,
+        uint256 amount,
+        string memory status,
+        string memory note
+    ) public {
         Transaction memory newTx = Transaction({
-            sender: msg.sender,
-            txId: _txId,
-            amount: _amount,
+            userId: userId,
+            campaignId: campaignId,
+            transactionId: transactionId,
+            amount: amount,
+            status: status,
+            note: note,
             timestamp: block.timestamp
         });
 
         transactions.push(newTx);
 
-        emit TransactionCommitted(msg.sender, _txId, _amount, block.timestamp);
+        emit TransactionCommitted(
+            userId,
+            campaignId,
+            transactionId,
+            amount,
+            status,
+            note,
+            block.timestamp
+        );
     }
 
     function getAllTransactions() public view returns (Transaction[] memory) {
