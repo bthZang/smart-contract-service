@@ -1,7 +1,8 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-ethers";
 import "@nomicfoundation/hardhat-ignition";
-
+import * as dotenv from "dotenv";
+dotenv.config();
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -9,8 +10,10 @@ const config: HardhatUserConfig = {
     settings: { optimizer: { enabled: true, runs: 200 } },
   },
   networks: {
-    hardhat: {
-      type: "edr-simulated",
+    sepolia: {
+      type: "http",
+      url: process.env.SEPOLIA_RPC!,
+      accounts: [process.env.PRIVATE_KEY!],
     },
   },
 };

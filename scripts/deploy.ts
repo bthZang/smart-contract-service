@@ -7,11 +7,8 @@ import path from "node:path";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 async function main() {
-  const provider = new ethers.JsonRpcProvider("http://127.0.0.1:8545");
-
-  const privateKey =
-    "0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d";
-  const wallet = new ethers.Wallet(privateKey, provider);
+  const provider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC);
+  const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
 
   const artifactPath = path.join(
     __dirname,
