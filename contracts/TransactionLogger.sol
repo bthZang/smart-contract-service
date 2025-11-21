@@ -15,9 +15,9 @@ contract TransactionLogger {
     Transaction[] public transactions;
 
     event TransactionCommitted(
-        uint256 userId,
-        uint256 campaignId,
-        uint256 transactionId,
+        uint256 indexed userId,
+        uint256 indexed campaignId,
+        uint256 indexed transactionId,
         uint256 amount,
         string status,
         string note,
@@ -55,8 +55,22 @@ contract TransactionLogger {
         );
     }
 
-    function getAllTransactions() public view returns (Transaction[] memory) {
-        return transactions;
+    function getTransactionByTxId(uint256 txId) public view returns (
+        uint256 userId,
+        uint256 campaignId,
+        uint256 transactionId,
+        uint256 amount,
+        string memory status,
+        string memory note,
+        uint256 timestamp
+    ) {
+        for (uint i = 0; i < transactions.length; i++) {
+            if (transactions[i].transactionId == txId) {
+                Transaction memory t = transactions[i];
+                return (t.userId, t.campaignId, t.transactionId, t.amount, t.status, t.note, t.timestamp);
+            }
+        }
+        revert("tx not found");
     }
 
     function getTransactionCount() public view returns (uint256) {
